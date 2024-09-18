@@ -1,5 +1,6 @@
 project:
   type: website
+  output-dir: docs
 
 website:
   title: "nsullivanwu.gitbuh.io"
@@ -17,3 +18,4 @@ format:
 
 editor: visual
 
+  
