@@ -3,18 +3,26 @@ project:
   output-dir: docs
 
 website:
-  title: "nsullivanwu.gitbuh.io"
+  title: "My phenomenal first website!"
   navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+    right: 
+      - text: "About Me"
+        href: about.qmd
+      - text: "Data Viz"
+        menu: 
+         - text: "Species of Rodent"
+           href: rodent_data.qmd
+         - text: "Coffee ratings"
+           href: coffee.qmd
+        
+
 
 format:
   html:
-    theme: cosmo
+    theme: minty
     css: styles.css
     toc: true
+    page-layout: full
 
 editor: visual
 

@@ -1,0 +1,37 @@
+---
+title: "Species of Rodents"
+
+subtitle: "Analysis: the white-throated woodrat had the highest difference in weight, at nearly 80, out of all the species of rodents. This is interesting, considereing every other species of rodent has a signicantly smaller weight."
+
+description: |
+  Analysis of Species of Rodents data from TidyTuesday
+author: Natalie Sullivan Wu
+date: September 18, 2024
+format: html
+---
+
+```{r}
+rodentdata <- tidytuesdayR:: tt_load('2023-05-02')
+species <- rodentdata$species
+
+```
+
+```{r}
+library(dplyr)
+weight <- species %>%
+  mutate(difference_weight = meanwgt - juvwgt, )
+  
+```
+
+```{r}
+library(ggplot2)
+ggplot(weight, aes(x = reorder(commonname, difference_weight), y = difference_weight, fill = difference_weight))+ 
+  geom_bar(stat = "identity")+
+  coord_flip() +
+  scale_fill_gradient(low = "yellow", high = "darkblue") + 
+  labs(title = "Difference in Weight for Rodent Species", 
+       x = "Name of Species",
+       y = "Difference in Weight"
+       ) + 
+  theme_minimal()
+```

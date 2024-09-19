@@ -1,0 +1,24 @@
+```{r}
+coffeedata <- tidytuesdayR:: tt_load('2020-07-07')
+coffee_ratings <- coffeedata$coffee_ratings
+
+```
+
+```{r}
+library(dplyr)
+coffee_ratings |>
+  select(total_cup_points, country_of_origin) |>
+  group_by(country_of_origin)
+```
+
+```{r}
+library(ggplot2)
+ggplot(coffee_ratings, aes(x = reorder(country_of_origin, total_cup_points), y = total_cup_points, fill = country_of_origin)) +
+    geom_bar(stat = "identity") + 
+    coord_flip() + 
+    labs(title = "Amount of cup points by country of origin", 
+         x = "country of origin", 
+         y = "total cup points") + 
+    theme_minimal() + 
+    theme(legend.position = "name")
+```

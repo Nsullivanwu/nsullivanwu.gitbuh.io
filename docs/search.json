@@ -2,15 +2,43 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About me",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "nsullivanwu.github.io",
+    "title": "Natalie Sullivan Wu",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "UntitledQMD.html",
+    "href": "UntitledQMD.html",
+    "title": "nsullivanwu.gitbuh.io",
+    "section": "",
+    "text": "title: “My resources”"
+  },
+  {
+    "objectID": "resources.html",
+    "href": "resources.html",
+    "title": "My phenomenal first website!",
+    "section": "",
+    "text": "title: “My resources”"
+  },
+  {
+    "objectID": "rodent_data.html",
+    "href": "rodent_data.html",
+    "title": "Species of Rodents",
+    "section": "",
+    "text": "rodentdata &lt;- tidytuesdayR:: tt_load('2023-05-02')\n\n---- Compiling #TidyTuesday Information for 2023-05-02 ----\n--- There are 3 files available ---\n\n\n── Downloading files ───────────────────────────────────────────────────────────\n\n  1 of 3: \"plots.csv\"\n  2 of 3: \"species.csv\"\n  3 of 3: \"surveys.csv\"\n\nspecies &lt;- rodentdata$species\n\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nweight &lt;- species %&gt;%\n  mutate(difference_weight = meanwgt - juvwgt, )\n\n\nlibrary(ggplot2)\nggplot(weight, aes(x = reorder(commonname, difference_weight), y = difference_weight, fill = difference_weight))+ \n  geom_bar(stat = \"identity\")+\n  coord_flip() +\n  scale_fill_gradient(low = \"yellow\", high = \"darkblue\") + \n  labs(title = \"Difference in Weight for Rodent Species\", \n       x = \"Name of Species\",\n       y = \"Difference in Weight\"\n       ) + \n  theme_minimal()\n\nWarning: Removed 3 rows containing missing values or values outside the scale range\n(`geom_bar()`)."
+  },
+  {
+    "objectID": "coffee.html",
+    "href": "coffee.html",
+    "title": "My phenomenal first website!",
+    "section": "",
+    "text": "coffeedata &lt;- tidytuesdayR:: tt_load('2020-07-07')\n\n---- Compiling #TidyTuesday Information for 2020-07-07 ----\n--- There is 1 file available ---\n\n\n── Downloading files ───────────────────────────────────────────────────────────\n\n  1 of 1: \"coffee_ratings.csv\"\n\ncoffee_ratings &lt;- coffeedata$coffee_ratings\n\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\ncoffee_ratings |&gt;\n  select(total_cup_points, country_of_origin) |&gt;\n  group_by(country_of_origin)\n\n# A tibble: 1,339 × 2\n# Groups:   country_of_origin [37]\n   total_cup_points country_of_origin\n              &lt;dbl&gt; &lt;chr&gt;            \n 1             90.6 Ethiopia         \n 2             89.9 Ethiopia         \n 3             89.8 Guatemala        \n 4             89   Ethiopia         \n 5             88.8 Ethiopia         \n 6             88.8 Brazil           \n 7             88.8 Peru             \n 8             88.7 Ethiopia         \n 9             88.4 Ethiopia         \n10             88.2 Ethiopia         \n# ℹ 1,329 more rows\n\n\n\nlibrary(ggplot2)\nggplot(coffee_ratings, aes(x = reorder(country_of_origin, total_cup_points), y = total_cup_points, fill = country_of_origin)) +\n    geom_bar(stat = \"identity\") + \n    coord_flip() + \n    labs(title = \"Amount of cup points by country of origin\", \n         x = \"country of origin\", \n         y = \"total cup points\") + \n    theme_minimal() + \n    theme(legend.position = \"name\")"
   }
 ]

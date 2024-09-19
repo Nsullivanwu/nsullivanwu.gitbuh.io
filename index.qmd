@@ -1,5 +1,21 @@
 ---
-title: "nsullivanwu.github.io"
+title: "Natalie Sullivan Wu"
+
+subtitle: " Hi my name is Natalie Sullivan Wu. I am a Sophomore at Pomona College in Claremont, California. I am from Burlingame California in the Bay Area. I am most likely going to be an economics major. I play women's water polo for the Pomona-Pitzer Sagehens."
+
+image: IMG_9573.jpeg
+toc: true 
+about: 
+  template: solana
+  image-shape: rectangle
+  image-width: 17em
+  links: 
+    - text: LinkedIn
+      href: https://www.linkedin.com/in/natalie-sullivan-wu-5198942b3/
+    - text: Github
+      href: https://github.com/Nsullivanwu
+    - text: Email
+      href: mailto:ncsm2023@mymail.pomona.edu
 ---
 
 This is a Quarto website.
@@ -7,5 +23,6 @@ This is a Quarto website.
 To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ```{r}
-1 + 1
+
+
 ```
