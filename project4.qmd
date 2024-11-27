@@ -1,0 +1,143 @@
+---
+title: "project4"
+---
+
+I will use the data from Wideband Acoustic Immittance (WAI) Database hosted by Smith College to recreate the figure "Mean Absorbance from Each Publication in the WAI Database" from Voss (2020).
+
+```{r}
+library(RMariaDB)
+library(tidyverse)
+con_wai <- dbConnect(
+  MariaDB(), host = "scidb.smith.edu",
+  user = "waiuser", password = "smith_waiDB", 
+  dbname= "wai"
+)
+Measurements <- tbl(con_wai, "Measurements")
+PI_Info <- tbl(con_wai, "PI_Info")
+Subjects <- tbl(con_wai, "Subjects")
+
+# collect(Measurements)
+```
+
+I started this project by using the SQL query, where I grouped together the data by different categories of "Frequency", "Year", "Instrument", "Identifier", and "AuthorShortList". I joined together the PI info and Measurements table to get the AuthorShortList. The table demonstrated the mean absorbance of frequencies starting at 200 Hertz and ending at 8000 Hertz.
+
+```{sql}
+#| connection: con_wai
+#| output.var: "new_table"
+    SELECT 
+        m.Frequency,
+        m.Identifier,
+        m.Instrument,
+        AVG(m.Absorbance) AS Mean_Absorption, 
+        CONCAT(pi.AuthorsShortList, ' (', pi.Year, ')', ' N=', COUNT(DISTINCT CONCAT(m.SubjectNumber, '-', m.Ear)),'; ', m.Instrument) AS Label
+    FROM 
+        Measurements m
+    JOIN 
+        PI_Info pi
+        ON m.Identifier = pi.Identifier
+    WHERE 
+        m.Identifier IN ('Abur_2014', 'Feeney_2017', 'Groon_2015', 'Lewis_2015', 'Lui_2008', 'Rosowski_2012', 'Shahnaz_2006', 'Shaver_2013', 'Sun_2016', 'Voss_1994', 'Voss_2010', 'Werner_2010')
+    GROUP BY 
+        m.Frequency, 
+        m.Identifier, 
+        m.Instrument, 
+        pi.Year, 
+        pi.AuthorsShortList
+    ORDER BY 
+        m.Frequency, 
+        m.Identifier, 
+        m.Instrument
+```
+
+There is a pattern where absorbance increases when frequency increases. However, after it reaches 1000 Hertz, it started to decrease and drop.
+
+```{r}
+library(ggplot2)
+ggplot(new_table, aes(x = Frequency, y = Mean_Absorption, color = Label)) +
+  geom_line(size = 0.6, na.rm = TRUE) +  
+  scale_x_continuous(
+    name = "Frequency (Hz)",
+    breaks = c(0, 2000, 3000, 3500, 3850, 6000, 7000, 7500, 8000),
+    labels = c("200", "400", "600", "800", "1000", "2000", "4000", "6000", "8000")
+  ) +
+  scale_y_continuous(
+    name = "Mean Absorbance",
+    limits = c(0, 1), 
+    breaks = seq(0, 1, by = 0.1)  
+  ) +
+  labs(
+    title = "Mean Absorbance From Each Publication in the WAI Database",  
+    color = NULL 
+  ) +
+  theme_minimal() + 
+  theme(
+    axis.text = element_text(size = 7),
+    axis.title = element_text(size = 7),
+    plot.title = element_text(size = 10, face = "bold", hjust = .5),
+    legend.text = element_text(size = 5),
+    legend.position = c(0.27, 0.9),
+    legend.key.size = unit(0.1, "cm"),
+    legend.spacing = unit(0.01, "cm"),
+    legend.background = element_rect(color = "black", size = .2, fill = "white"),
+    aspect.ratio = 1
+  ) +
+  coord_cartesian(xlim = c(200, 8000))
+```
+
+Next, I will do the same thing as before, however, will group by "sex" as well. I used the study Abur (2014) to measure and show the average absorbamce of frequencies.
+
+```{sql}
+#| connection: con_wai
+#| output.var: "new_table4"
+SELECT 
+    m.Frequency, 
+    s.Sex, 
+    AVG(m.Absorbance) AS Avg_Absorbance
+FROM 
+    Measurements m
+JOIN 
+    Subjects s
+ON 
+    m.SubjectNumber = s.SubjectNumber
+WHERE 
+    m.Identifier = 'Abur_2014'
+    AND s.Sex != 'Unknown'
+GROUP BY 
+    m.Frequency, s.Sex
+ORDER BY 
+    m.Frequency, s.Sex;
+
+```
+
+The two different lines show two sexes as subjects. The plot shows how male and female subjects have similar absorbance rates.
+
+```{r}
+library(ggplot2)
+
+ggplot(new_table4, aes(x = Frequency, y = Avg_Absorbance, color = Sex)) +
+  geom_line(size = 0.7, na.rm = TRUE) +
+  scale_x_continuous(
+    name = "Frequency (Hz)",
+    breaks = c(200, 400, 600, 800, 1000, 2000, 4000, 6000, 8000),
+    labels = c("200", "400", "600", "800", "1000", "2000", "4000", "6000", "8000")
+  ) +
+  scale_y_continuous(
+    name = "Average Absorbance",
+    limits = c(0, 1), 
+    breaks = seq(0, 1, by = 0.1)
+  ) +
+  labs(
+    title = "Average Absorbance by Frequency and Gender",
+    color = NULL 
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_text(size = 8),
+    axis.title = element_text(size = 12),
+    plot.title = element_text(size = 16, face = "bold"),
+    legend.text = element_text(size = 8),
+    legend.position = c(0.1, 0.9),
+    legend.box.background = element_rect(color = "black", fill = "white", size = 0.5) 
+  ) +
+  coord_cartesian(xlim = c(200, 8000)) 
+```

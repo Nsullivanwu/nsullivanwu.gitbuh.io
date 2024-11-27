@@ -14,8 +14,11 @@ website:
            href: rodent_data.qmd
          - text: "Coffee ratings"
            href: coffee.qmd
+         - text: "Project 3 -- Probability of Shared Birthdays"
+           href: project3.qmd
+         - text: "Project 4 -- SQL"
+           href: project4.qmd
         
-
 
 format:
   html:
