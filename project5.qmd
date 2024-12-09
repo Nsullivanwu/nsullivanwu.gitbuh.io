@@ -1,0 +1,93 @@
+---
+title: "Birthday Paradox Presentation"
+
+author: "Natalie Sullivan Wu"
+subtitle: "December 9, 2024"
+format:
+  revealjs:
+    scrollable: true
+    slide-number: true
+    show-slide-number: all
+    embed-resources: true
+    code-block-height: 100px
+
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+```{r}
+library(tidyverse)
+library(purrr)
+library(ggplot2)
+```
+
+## Permutation Test
+
+Birthday paradox -- Harold Davenport (1927)
+- The birthday paradox (birthday problem) is the fact that there is a 50% or larger chance that two people in a group of 23 have the same birthday
+
+# Steps 
+
+## My Project
+- find the birthday paradox for N amount of people
+```{r}
+sim_shared_bday <- function(N){
+  bdays <- sample(1:365, N, replace = TRUE)
+  return(length(bdays) != length(unique(bdays)))
+}
+```
+
+## Estimating the Probability of Shared Birthdays
+- multiple simulations using sapply()
+```{r}
+estimate_shared_bday <- function(N, num_sims){
+  outcome <- sapply(1:num_sims, function(x) sim_shared_bday(N))
+  return(mean(outcome))
+}
+```
+
+## Set the Parameters, Define our Probability, and Plot
+
+```{r}
+grp_size <- 2:100
+num_sims <- 1000 
+prob <- map_dbl(grp_size, ~ estimate_shared_bday(.x, num_sims))
+data <- data.frame(group_size = grp_size, probability = prob)
+
+ggplot(data, aes(x = group_size, y = probability)) + 
+  geom_point(color = "red", size = 2) + 
+  geom_line(size = 1) + 
+  labs(
+    title = "Shared Birthday Probaility Graph",
+    x = "Amount of People",
+    y = "Probability of Having a Shared Birthday"
+  ) + 
+  theme_minimal()
+```
+
+## In Comparison to the 50% Threshhold
+
+```{r}
+grp_size <- 2:100
+num_sims <- 1000 
+prob <- map_dbl(grp_size, ~ estimate_shared_bday(.x, num_sims))
+data <- data.frame(group_size = grp_size, probability = prob)
+
+ggplot(data, aes(x = group_size, y = probability)) + 
+  geom_point(color = "red", size = 2) + 
+  geom_line(size = 1) + 
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "blue", size = 1) + 
+  scale_x_continuous(breaks = seq(0, 100, by = 5)) + 
+  labs(
+    title = "Shared Birthday Probaility Graph",
+    x = "Amount of People",
+    y = "Probability of Having a Shared Birthday"
+  ) + 
+  theme_minimal()
+```
+
+## Takeaways 
+- Increase in group size increases --> rapid increase in probability (exponential) 
+- Contradicts intuitive prediction --> The probability would increase slowly 
+- After exponential growth --> Slope decreases (at 50 people)

@@ -3,22 +3,25 @@ project:
   output-dir: docs
 
 website:
-  title: "My phenomenal first website!"
+  title: "Natalie Sullivan Wu"
   navbar:
     right: 
-      - text: "About Me"
-        href: about.qmd
+      - text: "Resources"
+        href: resources.qmd
       - text: "Data Viz"
         menu: 
-         - text: "Species of Rodent"
+         - text: "Project 1 -- Species of Rodent"
            href: rodent_data.qmd
-         - text: "Coffee ratings"
+         - text: "Project 1 -- Coffee ratings"
            href: coffee.qmd
+         - text: "Project 2 -- Spotify Tracks"
+           href: miniproject2.qmd
          - text: "Project 3 -- Probability of Shared Birthdays"
            href: project3.qmd
          - text: "Project 4 -- SQL"
            href: project4.qmd
-        
+         - text: "Project 5 -- Presentation About My Projects"
+           href: project5.qmd
 
 format:
   html:

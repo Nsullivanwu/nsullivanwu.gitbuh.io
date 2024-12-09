@@ -3,11 +3,15 @@ title: "Species of Rodents"
 
 subtitle: "Analysis: the white-throated woodrat had the highest difference in weight, at nearly 80, out of all the species of rodents. This is interesting, considereing every other species of rodent has a signicantly smaller weight."
 
-description: |
+description:
   Analysis of Species of Rodents data from TidyTuesday
 author: Natalie Sullivan Wu
 date: September 18, 2024
 format: html
+
+execute: 
+  warning: false 
+  message: false
 ---
 
 ```{r}

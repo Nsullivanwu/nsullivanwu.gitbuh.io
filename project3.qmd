@@ -1,8 +1,11 @@
 ---
 title: "Project 3"
 author: "Natalie Sullivan Wu"
+description: Analysis of of a permutation test of shared birthdays
+date: October 30, 2024
 format: pdf
 editor: visual
+
 execute: 
   warning: false
   message: false

@@ -1,5 +1,12 @@
 ---
-title: "project4"
+title: "Project 4 -- SQL"
+description: Analysis of the data in the Wideband Acoustic Immittance (WAI) Database 
+author: Natalie Sullivan Wu
+date: November 26, 2024
+
+execute: 
+  warning: false 
+  message: false
 ---
 
 I will use the data from Wideband Acoustic Immittance (WAI) Database hosted by Smith College to recreate the figure "Mean Absorbance from Each Publication in the WAI Database" from Voss (2020).
@@ -37,6 +44,7 @@ I started this project by using the SQL query, where I grouped together the data
         ON m.Identifier = pi.Identifier
     WHERE 
         m.Identifier IN ('Abur_2014', 'Feeney_2017', 'Groon_2015', 'Lewis_2015', 'Lui_2008', 'Rosowski_2012', 'Shahnaz_2006', 'Shaver_2013', 'Sun_2016', 'Voss_1994', 'Voss_2010', 'Werner_2010')
+        AND m.frequency BETWEEN 200 AND 8000
     GROUP BY 
         m.Frequency, 
         m.Identifier, 
@@ -80,8 +88,7 @@ ggplot(new_table, aes(x = Frequency, y = Mean_Absorption, color = Label)) +
     legend.spacing = unit(0.01, "cm"),
     legend.background = element_rect(color = "black", size = .2, fill = "white"),
     aspect.ratio = 1
-  ) +
-  coord_cartesian(xlim = c(200, 8000))
+  ) 
 ```
 
 Next, I will do the same thing as before, however, will group by "sex" as well. I used the study Abur (2014) to measure and show the average absorbamce of frequencies.
@@ -102,6 +109,7 @@ ON
 WHERE 
     m.Identifier = 'Abur_2014'
     AND s.Sex != 'Unknown'
+    AND m.frequency BETWEEN 200 AND 8000
 GROUP BY 
     m.Frequency, s.Sex
 ORDER BY 
@@ -116,7 +124,7 @@ library(ggplot2)
 
 ggplot(new_table4, aes(x = Frequency, y = Avg_Absorbance, color = Sex)) +
   geom_line(size = 0.7, na.rm = TRUE) +
-  scale_x_continuous(
+  scale_x_log10(
     name = "Frequency (Hz)",
     breaks = c(200, 400, 600, 800, 1000, 2000, 4000, 6000, 8000),
     labels = c("200", "400", "600", "800", "1000", "2000", "4000", "6000", "8000")
@@ -138,6 +146,5 @@ ggplot(new_table4, aes(x = Frequency, y = Avg_Absorbance, color = Sex)) +
     legend.text = element_text(size = 8),
     legend.position = c(0.1, 0.9),
     legend.box.background = element_rect(color = "black", fill = "white", size = 0.5) 
-  ) +
-  coord_cartesian(xlim = c(200, 8000)) 
+  ) 
 ```

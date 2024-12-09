@@ -1,3 +1,17 @@
+---
+title: "Coffee Ratings"
+
+description: |
+  Analysis of Coffee Ratings data from TidyTuesday
+author: Natalie Sullivan Wu
+date: September 18, 2024
+format: html
+
+execute: 
+  warning: false 
+  message: false
+---
+
 ```{r}
 coffeedata <- tidytuesdayR:: tt_load('2020-07-07')
 coffee_ratings <- coffeedata$coffee_ratings
@@ -9,6 +23,8 @@ library(dplyr)
 coffee_ratings |>
   select(total_cup_points, country_of_origin) |>
   group_by(country_of_origin)
+
+coffee_ratings
 ```
 
 ```{r}
@@ -21,4 +37,62 @@ ggplot(coffee_ratings, aes(x = reorder(country_of_origin, total_cup_points), y =
          y = "total cup points") + 
     theme_minimal() + 
     theme(legend.position = "name")
+```
+
+Using Facet Wrapping, I will create a faceted graph to show the different factors that may affect the cup points for the type of coffee.
+
+```{r}
+coffee_ratings <- coffee_ratings |>
+  filter(!is.na(country_of_origin))
+
+ggplot(coffee_ratings, aes(x = total_cup_points)) +
+  geom_histogram(binwidth = 2, fill = "skyblue", color = "black") +
+  facet_wrap(~ country_of_origin) +
+  labs(
+    title = "Distribution of Total Cup Points by Country of Origin",
+    x = "Total Cup Points",
+    y = "Frequency"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    strip.text = element_text(size = 10)
+  )
+```
+
+```{r}
+# Load required libraries
+library(shiny)
+library(tidytuesdayR)
+
+coffee_data <- tidytuesdayR::tt_load('2020-07-07')$coffee_ratings
+
+
+ui <- fluidPage(
+  titlePanel("Coffee Ratings (by Country) Based on Sweetness Levels"),
+  
+  selectInput("country", "Select a Country of Origin:",
+              choices = unique(coffee_data$country_of_origin),
+              selected = "Ethiopia"),
+  plotOutput("scatterPlot")
+)
+
+server <- function(input, output) {
+    new_data <- reactive({
+    coffee_data |>
+      filter(country_of_origin == input$country)
+  })
+    output$scatterPlot <- renderPlot({
+    ggplot(new_data(), aes(x = sweetness, y = total_cup_points)) +
+      geom_point(color = "black", size = 3, alpha = 0.7) +
+      labs(
+        title = paste("Coffee Ratings for", input$country),
+        x = "Sweetness",
+        y = "Total Cup Points"
+      ) +
+      theme_minimal()
+  })
+}
+
+shinyApp(ui = ui, server = server)
 ```
