@@ -1,7 +1,7 @@
 ---
 title: "Natalie Sullivan Wu"
 
-subtitle: "Hi my name is Natalie Sullivan Wu. I am a Sophomore at Pomona College in Claremont, California. I am from Burlingame California in the Bay Area. I am most likely going to be an economics major. I play women's water polo for the Pomona-Pitzer Sagehens."
+subtitle: "Hi, my name is Natalie Sullivan Wu. I am originally from Burlingame California, but currently live in Claremont, California where I play water polo for Pomona College. I am a sophomore, intending to major in economics and minor in data science."
 
 image: IMG_9573.jpeg
 toc: true 

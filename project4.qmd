@@ -3,13 +3,14 @@ title: "Project 4 -- SQL"
 description: Analysis of the data in the Wideband Acoustic Immittance (WAI) Database 
 author: Natalie Sullivan Wu
 date: November 26, 2024
+format: html
 
 execute: 
   warning: false 
   message: false
 ---
 
-I will use the data from Wideband Acoustic Immittance (WAI) Database hosted by Smith College to recreate the figure "Mean Absorbance from Each Publication in the WAI Database" from Voss (2020).
+I will use the data from Wideband Acoustic Immittance (WAI) Database hosted by Smith College. I am using the data to recreate the figure "Mean Absorbance from Each Publication in the WAI Database" from Susan E. Voss Ph.D. It is originally from Resource Review. Ear and Hearing 40(6):p 1481, November/December 2019 (link: <https://journals.lww.com/ear-hearing/citation/2019/11000/resource_review.21.aspx>)
 
 ```{r}
 library(RMariaDB)
@@ -48,9 +49,7 @@ I started this project by using the SQL query, where I grouped together the data
     GROUP BY 
         m.Frequency, 
         m.Identifier, 
-        m.Instrument, 
-        pi.Year, 
-        pi.AuthorsShortList
+        m.Instrument
     ORDER BY 
         m.Frequency, 
         m.Identifier, 

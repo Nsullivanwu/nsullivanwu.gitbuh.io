@@ -3,7 +3,7 @@ title: "Project 2 "
 author: Natalie Sullivan Wu
 date: October 2, 2024
 description: An Analysis of the Spotify Tracks Dataset on Kaggle 
-format: pdf
+format: html
 editor: visual
 
 execute: 
@@ -20,7 +20,9 @@ dataset <- read.csv("dataset.csv")
 spotify <- dataset
 ```
 
-The data set "Spotify Tracks Dataset" from Kaggle.com has about 75,000 different tracks that spans over 100 genres. Because the data set is so large, I will try to organize some of it. First, I will see the frequency of each artist and each album.
+The data set "Spotify Tracks Dataset" is originally made by Maharshi Pandya (2022), where is was posted on Kaggle.com (link: https://doi.org/10.34740/KAGGLE/DSV/4372070). The data was originally collected using Spotify's Web API and Python.
+
+It has about 75,000 different tracks that spans over 100 genres. Because the data set is so large, I will try to organize some of it. First, I will see the frequency of each artist and each album.
 
 ```{r}
 artist_freq <- spotify |> 
@@ -57,13 +59,14 @@ ggplot(top_10_album, aes(x = reorder(album_name, n), y = n)) +
 Moving on, we are going to look at the song names. I am curious to know if certain words in the song title make it more popular. I am going to look at the most frequent words in song names.
 
 ```{r}
-song_names <- tolower(spotify$track_name)
-  words <- str_extract_all(song_names, "\\b\\w+(?:'\\w+)?\\b") |>
+words <- spotify |>
+  mutate(track_name = tolower(track_name)) |>
+  pull(track_name) |>
+  str_extract_all("\\b\\w+(?:'\\w+)?\\b") |>
   unlist() |>
   as.data.frame() |>
-  setNames("word") |> 
+  setNames("word") |>
   count(word, sort = TRUE) |>
-    
   filter(!(word %in%
              c("the", "a", "of", "and", "you", "me", "i", "to", "my"))) |>
   arrange(desc(n)) |>
@@ -71,7 +74,7 @@ song_names <- tolower(spotify$track_name)
   view(words)
 ```
 
-Although, we cannot filter out every filler word in songs, we can still see that there are some words such as "love", "Christmas", "life", or "night". I want to make a comparison by using graphs to see if having a certain word in the song name makes it more popular.
+Although, we cannot filter out every filler word in songs, we can still see that there are some words such as "love", "Christmas", "life", or "night". I want to make a comparison by using graphs to see if having a certain word in the song name makes it more popular. We can calculate the average popularity score to look at the relation between popularity and a certain key word in a song title. Popularity is a quantitative variable in the data set. We take the mean of it to find the average. 
 
 First we will look at songs with the word "love" in them
 

@@ -1,0 +1,13 @@
+---
+title: "My Resume"
+
+output: NSW Resume (3).pdf
+format: html
+execute:
+  warning: false
+  message: false 
+---
+[Download my resume](resume/NSW Resume (3).pdf)
+
+<iframe src="resume/NSW Resume (3).pdf" width="600" height="800"></iframe>
+

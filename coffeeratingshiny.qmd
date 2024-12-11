@@ -1,0 +1,57 @@
+---
+title: "Shiny App in Quarto for Coffee Ratings"
+runtime: shiny
+output: html
+
+execute: 
+  warning: false 
+  message: false
+---
+
+```{r}
+coffeedata <- tidytuesdayR:: tt_load('2020-07-07')
+coffee_ratings <- coffeedata$coffee_ratings
+
+```
+
+The data is provided by James LeDoux and comes from Coffee Quality Database (link: <https://github.com/jldbc/coffee-quality-database>). The original data is on LeDoux's Github and was re-posted to Kaggle.com (link: <https://www.kaggle.com/datasets/volpatto/coffee-quality-database-from-cqi>).
+
+Using a shiny app, I will install and interactive graph to show the relation between sweetness level and total cup points by nation of origin.
+
+```{r}
+library(rsconnect)
+library(shiny)
+library(tidytuesdayR)
+
+coffee_data <- tidytuesdayR::tt_load('2020-07-07')$coffee_ratings
+
+
+ui <- fluidPage(
+  titlePanel("Coffee Ratings (by Country) Based on Sweetness Levels"),
+  
+  selectInput("country", "Select a Country of Origin:",
+              choices = unique(coffee_data$country_of_origin),
+              selected = "Ethiopia"),
+  plotOutput("scatterPlot")
+)
+
+server <- function(input, output) {
+    new_data <- reactive({
+    coffee_data |>
+      filter(country_of_origin == input$country)
+  })
+    output$scatterPlot <- renderPlot({
+    ggplot(new_data(), aes(x = sweetness, y = total_cup_points)) +
+      geom_point(color = "black", size = 3, alpha = 0.7) +
+      labs(
+        title = paste("Coffee Ratings for", input$country),
+        x = "Sweetness",
+        y = "Total Cup Points"
+      ) +
+      theme_minimal()
+  })
+}
+
+shinyApp(ui = ui, server = server)
+deployApp()
+```

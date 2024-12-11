@@ -6,14 +6,16 @@ website:
   title: "Natalie Sullivan Wu"
   navbar:
     right: 
-      - text: "Resources"
-        href: resources.qmd
+      - text: "Resume"
+        href: resume.qmd
       - text: "Data Viz"
         menu: 
          - text: "Project 1 -- Species of Rodent"
            href: rodent_data.qmd
          - text: "Project 1 -- Coffee ratings"
            href: coffee.qmd
+         - text: "Shiny App for Coffee Ratings"
+           href: https://nsullivanwu.shinyapps.io/coffeeratingshiny/
          - text: "Project 2 -- Spotify Tracks"
            href: miniproject2.qmd
          - text: "Project 3 -- Probability of Shared Birthdays"
@@ -22,6 +24,8 @@ website:
            href: project4.qmd
          - text: "Project 5 -- Presentation About My Projects"
            href: project5.qmd
+           
+           
 
 format:
   html:
